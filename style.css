@@ -115,6 +115,97 @@ nav .menu-items{
     flex-direction: column;
     justify-content: space-between;
 }
+/*  */
+/* Estilos para hacer la tabla responsiva */
+.table-container {
+    overflow-x: auto;
+    max-width: 100%; /* Establece un ancho máximo para el contenedor */
+    margin: 0 auto; /* Centra el contenedor en la pantalla */
+}
+
+/* Estilo para la tabla */
+/* Estilo para la tabla */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+    border-radius: 8px; /* Bordes redondeados */
+    background-color: #f7f7f7; /* Fondo de la tabla */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo para las celdas de encabezado (th) */
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 12px;
+    min-width: 100px;
+    /* border-top-left-radius: 8px;
+    border-top-right-radius: 8px; */
+    background-color: #ffb180; /* Color de fondo para el encabezado */
+    color: #fff; /* Color del texto en el encabezado */
+}
+
+/* Estilo para las celdas de datos (td) */
+td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 12px;
+    min-width: 100px;
+    border-radius: 8px;
+    /* border-bottom-right-radius: 8px; */
+    /* background-color: #ffffff;  */
+}
+
+/* Cambiar el color de fondo de cada fila de manera alterna para mayor legibilidad */
+
+tbody tr:hover {
+    background-color: #ffb180;
+}
+
+/* Estilos para hacer que la tabla sea responsiva para pantallas pequeñas */
+@media screen and (max-width: 600px) {
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        white-space: nowrap; /* Evita el colapso de texto en múltiples líneas */
+        overflow-x: auto; /* Agrega una barra de desplazamiento horizontal cuando sea necesario */
+    }
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        min-width: 100px; /* Establece un ancho mínimo para las celdas de encabezado */
+    }
+    
+    /* Estilo para las celdas de datos (td) */
+    td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        min-width: 100px; /* Establece un ancho mínimo para las celdas de datos */
+    }
+}
+
+/* Estilos para la paginación */
+.pagination {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.prev-page,
+.next-page {
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.page-num {
+    font-weight: bold;
+}
+
+/*  */
 .menu-items li{
     list-style: none;
 }

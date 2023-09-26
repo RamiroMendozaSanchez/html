@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <!--=== Coding by CodingLab | www.codinglabweb.com === -->
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="style.css">
-     
+
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-    <title>Admin Dashboard Panel</title> 
+    <title>Admin Dashboard Panel</title>
 </head>
+
 <body>
     <nav>
         <div class="logo-name">
@@ -27,23 +29,23 @@
         <div class="menu-items">
             <ul class="nav-links">
                 <li><a href="#">
-                    <i class="uil uil-estate"></i>
-                    <span class="link-name">Dahsboard</span>
-                </a></li>
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Dahsboard</span>
+                    </a></li>
             </ul>
-            
+
             <ul class="logout-mode">
 
                 <li class="mode">
                     <a href="#">
                         <i class="uil uil-moon"></i>
-                    <span class="link-name">Modo Obscuro</span>
-                </a>
+                        <span class="link-name">Modo Obscuro</span>
+                    </a>
 
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -61,21 +63,6 @@
                 </div>
 
                 <div class="boxes">
-                    <div class="box box1">
-                        <i class="uil uil-cpu"></i>
-                        <span class="text">CPU</span>
-                        <span class="number">50,120</span>
-                    </div>
-                    <div class="box box2">
-                        <i class="uil uil"></i>
-                        <span class="text">RAM</span>
-                        <span class="number">20,120</span>
-                    </div>
-                    <div class="box box3">
-                        <i class="uil uil-"></i>
-                        <span class="text">ACTIVIDAD</span>
-                        <span class="number">10,120</span>
-                    </div>
                 </div>
             </div>
 
@@ -84,14 +71,40 @@
                     <i class="uil uil-clock-three"></i>
                     <span class="text">Actividad</span>
                 </div>
-                
+
                 <div class="activity-data">
-                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>ID</th>
+                                    <th>IMEI</th>
+                                    <th>Latitud</th>
+                                    <th>Longitud</th>
+                                    <th>Velocidad</th>
+                                    <th>Satélite</th>
+                                    <th>Ángulo</th>
+                                    <th>Voltaje de Batería</th>
+                                    <th>Validez GPS</th>
+                                    <th>Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody class="data-table-body">
+                                <!-- Aquí se agregarán las filas de datos dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="pagination">
+                <button class="prev-page">Anterior</button>
+                <span class="page-num">Página 1</span>
+                <button class="next-page">Siguiente</button>
+            </div>
     </section>
 
     <script src="script.js"></script>
 </body>
+
 </html>

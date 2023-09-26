@@ -1,71 +1,96 @@
 
-const apiUrl = 'https://api.chipkontrol.com/unit';
-// const apiUrl = 'http://127.0.0.1:3000/unit';
+//const apiUrl = 'https://api.chipkontrol.com/unit';
+ const apiUrl = 'http://127.0.0.1:9000/unit';
 
-const serverInfoUrl = 'https://api.chipkontrol.com/server';
-// const serverInfoUrl = 'http://127.0.0.1:3000/server';
+//const serverInfoUrl = 'https://api.chipkontrol.com/server';
+const serverInfoUrl = 'http://127.0.0.1:9000/server';
 
+const units='';
+const itemsPerPage = 10; // Número de filas por página
+let currentPage = 1; // Página actual
+const tableBody = document.querySelector('.data-table-body');
+const cardInfo = document.querySelector('.overview');
+const prevPageBtn = document.querySelector('.prev-page');
+const nextPageBtn = document.querySelector('.next-page');
+const pageNumElement = document.querySelector('.page-num');
 
-async function getDataFromApi() {
+async function fetchData(url) {
     try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        //console.log(data);
-        return data;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Error al obtener los datos de la API Units');
+        }
+        return await response.json();
     } catch (error) {
         //console.error('Error al obtener los datos:', error);
         return [];
     }
 }
 
-async function getServerInfoFromApi() {
-    try {
-        const response = await fetch(serverInfoUrl);
-        const data = await response.json();
-        //console.log(data);
-        return data;
-    } catch (error) {
-        //console.error('Error al obtener los datos:', error);
-        return [];
+// Función para mostrar datos en la página actual
+async function displayDataOnPage(page) {
+
+    let data = JSON.parse(localStorage.getItem('data'))
+    const newData = await fetchData(apiUrl);
+
+    if (Array.isArray(newData) && newData.length > 0) {
+        data = newData
+        localStorage.setItem('data', JSON.stringify(data));
     }
+    tableBody.innerHTML = ''; // Limpiar la tabla
+
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    for (let i = startIndex; i < endIndex && i < data.length; i++) {
+        const row = document.createElement('tr'); // Crea una nueva fila
+
+        // Crea y agrega celdas con los valores de las propiedades de 'data[i]'
+        for (const prop of ['name', 'id', 'imei_no', 'lattitude', 'longitude', 'speed', 'satellite', 'angle', 'battery_voltage', 'gps_validity', 'time']) {
+            const cell = document.createElement('td');
+            cell.textContent = data[i][prop];
+            row.appendChild(cell);
+        }
+
+        tableBody.appendChild(row);// Agrega la fila al tbody
+    }
+
+    // Actualiza el número de página actual en el elemento HTML
+    pageNumElement.textContent = `Página ${page}`;
 }
-async function createTable() {
-    const data = await getDataFromApi();
-    const serverInfo = await getServerInfoFromApi()
-    const tableBody = document.querySelector('.activity-data');
-    const cardInfo = document.querySelector('.overview');
 
-    // Limpiar tabla antes de agregar datos
-    tableBody.innerHTML = '';
-    cardInfo.innerHTML = ''
+// Función para actualizar el estado de los botones de paginación
+async function updatePaginationButtons() {
+    const data = await fetchData(apiUrl);
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === Math.ceil(data.length / itemsPerPage);
+}
 
-    // Recorrer los datos y agregar filas a la tabla
-    var status ="";
-    Object.keys(data).forEach((item) => {
-        const row = document.createElement('div');
-        row.classList.add('data')
-        var valor = data[item];
-        //console.log(item);
-        row.innerHTML = `
-            <span class="data-title">${valor.name}</span>
-            <span class="data-list">${valor.id}</span>
-            <span class="data-list">${valor.imei}</span>
-            <span class="data-list">${valor.lat}</span>
-            <span class="data-list">${valor.log}</span>
-            <span class="data-list">${valor.speed}</span>
-            <span class="data-list">${valor.sat}</span>
-            <span class="data-list">${valor.ang}</span>
-            <span class="data-list">${valor.battery_voltage}</span>
-            <span class="data-list">${valor.gps_validity}</span>
-            <span class="data-list">${valor.time}</span>
-  
-      `;
-        tableBody.appendChild(row);
-        status = valor.server
-    });
+// Manejadores de eventos para los botones de paginación
+prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--; 
+        displayDataOnPage(currentPage);
+        updatePaginationButtons();
+    }
+});
+
+nextPageBtn.addEventListener('click', async () => {
+    const data = await fetchData(apiUrl);
+    if (currentPage < Math.ceil(data.length / itemsPerPage)) {
+        currentPage++;
+        displayDataOnPage(currentPage);
+        updatePaginationButtons();
+    }
+});
+
+async function loadCardsFromService() {
+    let data = JSON.parse(localStorage.getItem('data'))
+
+    const serverInfo = await fetchData(serverInfoUrl);
     const row = document.createElement('div');
     row.classList.add('boxes')
-    //console.log(serverInfo);
+    const allServersOnline = data.every(item => item.server === 'true');
     row.innerHTML = `
         <div class="box box1">
             <i class="uil uil-cpu"></i>
@@ -95,13 +120,11 @@ async function createTable() {
         <div class="box box5">
             <i class="uil uil-cpu"></i>
             <span class="text">STATUS API SITRACK</span>
-            <span class="number">${status == 'true'? 'Correcto' : 'Fallo'}</span>
+            <span class="number">${allServersOnline ? 'Correcto' : 'Fallo'}</span>
         </div>
       `;
     cardInfo.appendChild(row);
 }
-
-document.addEventListener('DOMContentLoaded', createTable);
 
 const body = document.querySelector("body"),
     modeToggle = body.querySelector(".mode-toggle");
@@ -136,3 +159,7 @@ sidebarToggle.addEventListener("click", () => {
     }
 })
 
+document.addEventListener('DOMContentLoaded', () =>{
+    displayDataOnPage(currentPage);
+    loadCardsFromService();
+});
