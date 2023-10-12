@@ -1,11 +1,11 @@
 
 //const apiUrl = 'https://api.chipkontrol.com/unit';
- const apiUrl = 'http://127.0.0.1:9000/unit';
+const apiUrl = 'http://127.0.0.1:3000/unit';
 
 //const serverInfoUrl = 'https://api.chipkontrol.com/server';
-const serverInfoUrl = 'http://127.0.0.1:9000/server';
+const serverInfoUrl = 'http://127.0.0.1:3000/server';
 
-const units='';
+const units = '';
 const itemsPerPage = 10; // Número de filas por página
 let currentPage = 1; // Página actual
 const tableBody = document.querySelector('.data-table-body');
@@ -46,9 +46,13 @@ async function displayDataOnPage(page) {
         const row = document.createElement('tr'); // Crea una nueva fila
 
         // Crea y agrega celdas con los valores de las propiedades de 'data[i]'
-        for (const prop of ['name', 'id', 'imei_no', 'lattitude', 'longitude', 'speed', 'satellite', 'angle', 'battery_voltage', 'gps_validity', 'time']) {
+        for (const prop of ['name', 'id', 'imei', 'lat', 'log', 'speed', 'sat', 'ang', 'battery_voltage', 'gps_validity', 'time']) {
             const cell = document.createElement('td');
             cell.textContent = data[i][prop];
+            // Verifica si la propiedad es 'name' y agrega una clase CSS
+            if (prop === 'name') {
+                cell.classList.add('bold'); // Añadir clase 'naranja' para el color naranja
+            }
             row.appendChild(cell);
         }
 
@@ -69,7 +73,7 @@ async function updatePaginationButtons() {
 // Manejadores de eventos para los botones de paginación
 prevPageBtn.addEventListener('click', () => {
     if (currentPage > 1) {
-        currentPage--; 
+        currentPage--;
         displayDataOnPage(currentPage);
         updatePaginationButtons();
     }
@@ -159,7 +163,7 @@ sidebarToggle.addEventListener("click", () => {
     }
 })
 
-document.addEventListener('DOMContentLoaded', () =>{
+document.addEventListener('DOMContentLoaded', () => {
     displayDataOnPage(currentPage);
     loadCardsFromService();
 });
